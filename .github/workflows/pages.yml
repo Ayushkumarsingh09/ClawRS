@@ -31,6 +31,7 @@ jobs:
         working-directory: web
         env:
           VITE_API_BASE: ${{ vars.VITE_API_BASE }}
+          VITE_BASE: /ClawRS/
         run: |
           npm ci
           npm run build
