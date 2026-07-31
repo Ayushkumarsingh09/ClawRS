@@ -255,6 +255,15 @@
   margin: 0 0 1.5rem;
 }
 
+.demoHint {
+  font-size: 0.85rem !important;
+}
+
+.demoHint code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
 .primaryBtn {
   background: linear-gradient(180deg, var(--accent), var(--accent-dim));
   color: #0a0a0a;
