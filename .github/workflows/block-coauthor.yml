@@ -1,0 +1,20 @@
+name: Block co-author trailers
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  commit-messages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fail if co-author trailer present
+        run: |
+          if git log -30 --format=%B | grep -iE 'Co-authored-by:.*[Cc]ursor|cursoragent@cursor.com'; then
+            echo "A recent commit contains an unwanted co-author trailer."
+            exit 1
+          fi

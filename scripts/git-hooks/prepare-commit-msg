@@ -1,21 +1,6 @@
-#!/usr/bin/env python3
-"""Strip Cursor co-author trailers so GitHub does not list cursoragent."""
-import sys
-
-if len(sys.argv) < 2:
-    sys.exit(0)
-
-path = sys.argv[1]
-try:
-    with open(path, encoding="utf-8") as f:
-        text = f.read()
-except OSError:
-    sys.exit(0)
-
-lines = [
-    line
-    for line in text.splitlines(keepends=True)
-    if "Co-authored-by: Cursor" not in line and "cursoragent@cursor.com" not in line
-]
-with open(path, "w", encoding="utf-8") as f:
-    f.write("".join(lines))
+#!/bin/sh
+# Remove automated co-author trailers from commit messages (Git Bash on Windows).
+MSG_FILE=$1
+[ -n "$MSG_FILE" ] && [ -f "$MSG_FILE" ] || exit 0
+TMP="${MSG_FILE}.clawrs"
+grep -v 'Co-authored-by: Cursor' "$MSG_FILE" | grep -v 'cursoragent@cursor.com' > "$TMP" && mv "$TMP" "$MSG_FILE"

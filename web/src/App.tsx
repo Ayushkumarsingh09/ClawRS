@@ -181,9 +181,12 @@ export default function App() {
               </p>
               {mode === "demo" && (
                 <p className={styles.demoHint}>
-                  You are in <strong>demo mode</strong> on GitHub Pages — chat works locally.
-                  Deploy the gateway (Render/Docker) and set <code>VITE_API_BASE</code> for live LLM
-                  responses.
+                  You are in <strong>demo mode</strong> — chat is stored in this browser only. The live
+                  gateway is at{" "}
+                  <a href="https://clawrs-api.vercel.app" target="_blank" rel="noreferrer">
+                    clawrs-api.vercel.app
+                  </a>
+                  .
                 </p>
               )}
               <button type="button" className={styles.primaryBtn} onClick={newSession}>

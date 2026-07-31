@@ -4,21 +4,38 @@ import type { Agent, Message, Session, Status } from "./types";
 export type { Agent, Message, Session, Status } from "./types";
 export type ConnectionMode = "live" | "demo";
 
-const apiBase = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
+/** Production API used when GitHub Pages build omits `VITE_API_BASE`. */
+const PRODUCTION_API = "https://clawrs-api.vercel.app";
+
+function resolveApiBase(): string {
+  const fromEnv = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
+  if (fromEnv) return fromEnv;
+  if (typeof window !== "undefined" && window.location.hostname.endsWith("github.io")) {
+    return PRODUCTION_API;
+  }
+  return "";
+}
+
+const apiBase = resolveApiBase();
 const forceDemo = import.meta.env.VITE_FORCE_DEMO === "true";
 
 let resolvedMode: ConnectionMode | null = forceDemo ? "demo" : null;
 
-async function probeLiveApi(): Promise<boolean> {
-  if (!apiBase && typeof window !== "undefined") {
-    // GitHub Pages: same-origin has no API unless Pages proxy or external base set
-    if (window.location.hostname.endsWith("github.io")) {
-      return false;
-    }
-  }
-  const healthUrl = apiBase ? `${apiBase}/health` : "/health";
+async function fetchWithTimeout(url: string, ms: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), ms);
   try {
-    const res = await fetch(healthUrl, { method: "GET", signal: AbortSignal.timeout(4000) });
+    return await fetch(url, { method: "GET", signal: controller.signal, mode: "cors" });
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+async function probeLiveApi(): Promise<boolean> {
+  if (!apiBase) return false;
+  const healthUrl = `${apiBase}/health`;
+  try {
+    const res = await fetchWithTimeout(healthUrl, 8000);
     return res.ok;
   } catch {
     return false;
