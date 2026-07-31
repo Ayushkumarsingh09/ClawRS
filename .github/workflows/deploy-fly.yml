@@ -1,0 +1,45 @@
+# Deploy ClawRS gateway to Fly.io (full API + embedded UI)
+# Add repository secret: FLY_API_TOKEN (from `fly tokens create deploy`)
+
+name: Deploy Fly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "fly.toml"
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "web/**"
+
+concurrency:
+  group: deploy-fly
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.FLY_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Ensure Fly volume
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl volumes list -a clawrs-platform 2>/dev/null | grep -q clawrs_data || \
+          flyctl volumes create clawrs_data --region iad --size 1 -a clawrs-platform -y || true
+      - name: Deploy to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl deploy --remote-only --ha=false -a clawrs-platform
+
+      - name: Sync GitHub Pages API URL
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh variable set VITE_API_BASE --body "https://clawrs-platform.fly.dev" --repo "${{ github.repository }}"
+          gh workflow run pages.yml --repo "${{ github.repository }}"

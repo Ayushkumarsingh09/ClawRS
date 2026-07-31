@@ -1,0 +1,62 @@
+# Deploy ClawRS to Render (Docker) when RENDER_API_KEY is configured.
+# Create key: https://dashboard.render.com/u/settings#api-keys
+# Also connect repo via https://dashboard.render.com/select-repo?type=blueprint
+
+name: Deploy Render
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "render.yaml"
+      - "Dockerfile"
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "web/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Skip without Render API key
+        id: check
+        run: |
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "RENDER_API_KEY not set — use https://render.com/deploy?repo=https://github.com/${{ github.repository }}"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger Render deploy from blueprint
+        if: steps.check.outputs.skip == 'false'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -fsS -X POST "https://api.render.com/v1/services" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d @- <<'EOF' || true
+          {
+            "type": "web_service",
+            "name": "clawrs",
+            "repo": "https://github.com/Ayushkumarsingh09/ClawRS",
+            "branch": "main",
+            "runtime": "docker",
+            "plan": "free",
+            "region": "oregon",
+            "healthCheckPath": "/health"
+          }
+          EOF
+
+      - name: Set Pages API URL and redeploy console
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh variable set VITE_API_BASE --body "https://clawrs.onrender.com" --repo "${{ github.repository }}"
+          gh workflow run pages.yml --repo "${{ github.repository }}"
