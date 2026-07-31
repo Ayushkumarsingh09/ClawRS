@@ -25,6 +25,7 @@
   width: 40px;
   height: 40px;
   object-fit: contain;
+  display: block;
 }
 
 .title {
@@ -44,6 +45,25 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.pillLive,
+.pillDemo {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.pillLive {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 40%, var(--border));
+}
+
+.pillDemo {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
 }
 
 .pill {

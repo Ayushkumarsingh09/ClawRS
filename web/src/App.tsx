@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { api, type Agent, type Message, type Session, type Status } from "./api/client";
+import { api, type Agent, type ConnectionMode, type Message, type Session, type Status } from "./api/client";
+import { LOGO_URL } from "./lib/assets";
 import styles from "./App.module.css";
 
 export default function App() {
+  const [mode, setMode] = useState<ConnectionMode | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [agent, setAgent] = useState<Agent | null>(null);
@@ -17,11 +19,13 @@ export default function App() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const loadCore = useCallback(async () => {
+    const connection = await api.connectionMode();
+    setMode(connection);
     const [st, ag] = await Promise.all([api.status(), api.agents()]);
     setStatus(st);
     setAgents(ag);
-    if (!agent && ag.length > 0) setAgent(ag[0]);
-  }, [agent]);
+    setAgent((current) => current ?? ag[0] ?? null);
+  }, []);
 
   useEffect(() => {
     loadCore().catch((e) => setError(String(e)));
@@ -46,6 +50,7 @@ export default function App() {
 
   async function newSession() {
     if (!agent) return;
+    setError(null);
     const s = await api.createSession(agent.id);
     setSessions((prev) => [s, ...prev]);
     setSessionId(s.id);
@@ -58,26 +63,16 @@ export default function App() {
     setInput("");
     setSending(true);
     setError(null);
-    const optimistic: Message = {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: text,
-      created_at: new Date().toISOString(),
-    };
-    setMessages((m) => [...m, optimistic]);
     try {
-      const res = await api.chat(sessionId, text);
-      setMessages((m) => [
-        ...m,
-        {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          content: res.reply,
-          created_at: new Date().toISOString(),
-        },
-      ]);
-      const refreshed = await api.sessions(agent!.id);
-      setSessions(refreshed);
+      await api.chat(sessionId, text);
+      const msgs = await api.messages(sessionId);
+      setMessages(msgs);
+      if (agent) {
+        const refreshed = await api.sessions(agent.id);
+        setSessions(refreshed);
+      }
+      const st = await api.status();
+      setStatus(st);
     } catch (e) {
       setError(String(e));
     } finally {
@@ -89,13 +84,18 @@ export default function App() {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <img src="/logo.png" alt="" className={styles.logo} />
+          <img src={LOGO_URL} alt="ClawRS" className={styles.logo} width={40} height={40} />
           <div>
             <div className={styles.title}>ClawRS</div>
             <div className={styles.tagline}>Rust-native agent platform</div>
           </div>
         </div>
         <div className={styles.headerMeta}>
+          {mode && (
+            <span className={mode === "demo" ? styles.pillDemo : styles.pillLive}>
+              {mode === "demo" ? "Demo mode" : "Live API"}
+            </span>
+          )}
           {status && (
             <>
               <span className={styles.pill}>
@@ -182,6 +182,13 @@ export default function App() {
                 ClawRS orchestrates models, tools, and memory in a single Rust binary.
                 Pick an agent, open a session, and send a message.
               </p>
+              {mode === "demo" && (
+                <p className={styles.demoHint}>
+                  You are in <strong>demo mode</strong> on GitHub Pages — chat works locally.
+                  Deploy the gateway (Render/Docker) and set <code>VITE_API_BASE</code> for live LLM
+                  responses.
+                </p>
+              )}
               <button type="button" className={styles.primaryBtn} onClick={newSession}>
                 Start session
               </button>

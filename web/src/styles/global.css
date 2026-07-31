@@ -35,15 +35,11 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow), transparent),
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    48px 48px,
-    48px 48px;
-  background-position: center top;
+  background-image: radial-gradient(
+    ellipse 90% 60% at 50% -30%,
+    var(--accent-glow),
+    transparent 70%
+  );
 }
 
 button,

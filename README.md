@@ -16,7 +16,7 @@ Inspired by the *architecture* of [GoClaw](https://github.com/nextlevelbuilder/g
 
 | Resource | URL |
 |----------|-----|
-| **Web console (GitHub Pages)** | [https://ayushkumarsingh09.github.io/ClawRS/](https://ayushkumarsingh09.github.io/ClawRS/) |
+| **Web console (GitHub Pages)** | [https://ayushkumarsingh09.github.io/ClawRS/](https://ayushkumarsingh09.github.io/ClawRS/) — runs in **demo mode** in the browser when no API is configured (full chat UX, local storage). Set repo variable `VITE_API_BASE` to your gateway URL for **live API** mode. |
 | **Repository** | [https://github.com/Ayushkumarsingh09/ClawRS](https://github.com/Ayushkumarsingh09/ClawRS) |
 | **Full stack (API + UI)** | [Deploy to Render](https://render.com/deploy?repo=https://github.com/Ayushkumarsingh09/ClawRS) — free tier; set `CLAWRS_OPENAI_API_KEY` for real LLM responses |
 
