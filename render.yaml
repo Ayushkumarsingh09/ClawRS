@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: clawrs
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: CLAWRS_LISTEN
+        value: 0.0.0.0:8787
+      - key: CLAWRS_DATABASE_URL
+        value: sqlite:///data/clawrs.db?mode=rwc
+      - key: CLAWRS_OPENAI_API_KEY
+        sync: false
+      - key: CLAWRS_DEFAULT_MODEL
+        value: gpt-4o-mini
+    disk:
+      name: clawrs-data
+      mountPath: /data
+      sizeGB: 1
