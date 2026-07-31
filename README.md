@@ -17,7 +17,7 @@ Inspired by the *architecture* of [GoClaw](https://github.com/nextlevelbuilder/g
 | Resource | URL |
 |----------|-----|
 | **Web console (GitHub Pages)** | [https://ayushkumarsingh09.github.io/ClawRS/](https://ayushkumarsingh09.github.io/ClawRS/) — **live API** when built with `VITE_API_BASE` (currently [clawrs-api.vercel.app](https://clawrs-api.vercel.app)); falls back to **demo mode** (local storage) if the API is unreachable. |
-| **Repository** | [https://github.com/Ayushkumarsingh09/ClawRS](https://github.com/Ayushkumarsingh09/ClawRS) |
+| **Repository** | [https://github.com/Ayushkumarsingh09/ClawRS](https://github.com/Ayushkumarsingh09/ClawRS) — full linear history is preserved on tag [`archive/full-history`](https://github.com/Ayushkumarsingh09/ClawRS/tree/archive/full-history) |
 | **Live API (Vercel)** | [https://clawrs-api.vercel.app](https://clawrs-api.vercel.app) (`/health`, `/api/v1/…`) — gateway for GitHub Pages (`VITE_API_BASE`) |
 | **Full stack (Docker)** | [Deploy to Render](https://render.com/deploy?repo=https://github.com/Ayushkumarsingh09/ClawRS) (free tier; add billing on Fly if using `fly.toml`) |
 
