@@ -1,7 +1,14 @@
 # ClawRS
 
 <p align="center">
-  <img src="ClawRS.png?v=2" alt="ClawRS" width="520" />
+  <a href="https://ayushkumarsingh09.github.io/ClawRS/">
+    <img
+      src="ClawRS.png?v=3"
+      alt="ClawRS — Rust-native AI agent platform"
+      width="520"
+      style="background-color: #ebebef; border-radius: 14px; padding: 22px 28px;"
+    />
+  </a>
 </p>
 
 <p align="center">
