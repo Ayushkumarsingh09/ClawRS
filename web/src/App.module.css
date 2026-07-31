@@ -22,9 +22,19 @@
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+  height: 2.25rem;
+  width: auto;
+  max-width: min(220px, 48vw);
   object-fit: contain;
+  display: block;
+}
+
+.welcomeLogo {
+  height: auto;
+  width: min(420px, 88vw);
+  max-height: 200px;
+  object-fit: contain;
+  margin: 0 auto 1.25rem;
   display: block;
 }
 

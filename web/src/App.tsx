@@ -84,11 +84,7 @@ export default function App() {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <img src={LOGO_URL} alt="ClawRS" className={styles.logo} width={40} height={40} />
-          <div>
-            <div className={styles.title}>ClawRS</div>
-            <div className={styles.tagline}>Rust-native agent platform</div>
-          </div>
+          <img src={LOGO_URL} alt="ClawRS" className={styles.logo} />
         </div>
         <div className={styles.headerMeta}>
           {mode && (
@@ -177,6 +173,7 @@ export default function App() {
         <main className={styles.main}>
           {!sessionId ? (
             <div className={styles.welcome}>
+              <img src={LOGO_URL} alt="" className={styles.welcomeLogo} aria-hidden />
               <h1>Run agents at wire speed</h1>
               <p>
                 ClawRS orchestrates models, tools, and memory in a single Rust binary.
