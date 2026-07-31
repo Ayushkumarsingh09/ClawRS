@@ -1,0 +1,19 @@
+[package]
+name = "clawrs-tools"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Tool registry and execution sandbox ports"
+
+[dependencies]
+clawrs-core = { workspace = true }
+clawrs-llm = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+parking_lot = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
