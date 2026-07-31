@@ -1,7 +1,7 @@
 # ClawRS
 
 <p align="center">
-  <img src="ClawRS.png" alt="ClawRS" width="520" />
+  <img src="ClawRS.png?v=2" alt="ClawRS" width="520" />
 </p>
 
 <p align="center">
