@@ -1,0 +1,26 @@
+# fly.toml — ClawRS gateway (Docker)
+app = "clawrs-platform"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  CLAWRS_LISTEN = "0.0.0.0:8787"
+  CLAWRS_DATABASE_URL = "sqlite:///data/clawrs.db?mode=rwc"
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[mounts]
+  source = "clawrs_data"
+  destination = "/data"

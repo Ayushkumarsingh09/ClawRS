@@ -1,0 +1,7 @@
+{
+  "name": "clawrs-api",
+  "private": true,
+  "dependencies": {
+    "@vercel/node": "^5.0.0"
+  }
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Remove automated co-author trailers from commit messages (Git Bash on Windows).
+MSG_FILE=$1
+[ -n "$MSG_FILE" ] && [ -f "$MSG_FILE" ] || exit 0
+TMP="${MSG_FILE}.clawrs"
+grep -v 'Co-authored-by: Cursor' "$MSG_FILE" | grep -v 'cursoragent@cursor.com' > "$TMP" && mv "$TMP" "$MSG_FILE"
