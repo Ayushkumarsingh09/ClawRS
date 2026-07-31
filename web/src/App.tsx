@@ -16,15 +16,24 @@ export default function App() {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [booting, setBooting] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const loadCore = useCallback(async () => {
-    const connection = await api.connectionMode();
-    setMode(connection);
-    const [st, ag] = await Promise.all([api.status(), api.agents()]);
-    setStatus(st);
-    setAgents(ag);
-    setAgent((current) => current ?? ag[0] ?? null);
+    setBooting(true);
+    setError(null);
+    try {
+      const connection = await api.connectionMode();
+      setMode(connection);
+      const [st, ag] = await Promise.all([api.status(), api.agents()]);
+      setStatus(st);
+      setAgents(ag);
+      setAgent((current) => current ?? ag[0] ?? null);
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setBooting(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -49,12 +58,28 @@ export default function App() {
   }, [messages, sending]);
 
   async function newSession() {
-    if (!agent) return;
     setError(null);
-    const s = await api.createSession(agent.id);
-    setSessions((prev) => [s, ...prev]);
-    setSessionId(s.id);
-    setMessages([]);
+    try {
+      let active = agent;
+      if (!active) {
+        const list = agents.length ? agents : await api.agents();
+        if (list.length) {
+          setAgents(list);
+          active = list[0];
+          setAgent(active);
+        }
+      }
+      if (!active) {
+        setError("No agent available. Check the API connection and try again.");
+        return;
+      }
+      const s = await api.createSession(active.id);
+      setSessions((prev) => [s, ...prev]);
+      setSessionId(s.id);
+      setMessages([]);
+    } catch (e) {
+      setError(String(e));
+    }
   }
 
   async function send() {
@@ -189,8 +214,14 @@ export default function App() {
                   .
                 </p>
               )}
-              <button type="button" className={styles.primaryBtn} onClick={newSession}>
-                Start session
+              {error && <div className={styles.error}>{error}</div>}
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                onClick={newSession}
+                disabled={booting}
+              >
+                {booting ? "Connecting…" : "Start session"}
               </button>
             </div>
           ) : (

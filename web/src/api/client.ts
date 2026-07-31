@@ -58,10 +58,11 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   if (mode === "demo") {
     throw new Error("demo-routing");
   }
+  const hasBody = init?.body != null && init.body !== "";
   const res = await fetch(`${apiBase}${path}`, {
     ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
       ...(init?.headers ?? {}),
     },
   });
