@@ -10,3 +10,4 @@
 web/node_modules
 *.db
 web/dist
+web/tsconfig.tsbuildinfo
