@@ -1,0 +1,16 @@
+services:
+  clawrs:
+    build: .
+    ports:
+      - "8787:8787"
+    environment:
+      CLAWRS_LISTEN: 0.0.0.0:8787
+      CLAWRS_DATABASE_URL: sqlite:///data/clawrs.db?mode=rwc
+      CLAWRS_OPENAI_API_KEY: ${CLAWRS_OPENAI_API_KEY:-}
+      CLAWRS_DEFAULT_MODEL: ${CLAWRS_DEFAULT_MODEL:-gpt-4o-mini}
+      CLAWRS_API_KEY: ${CLAWRS_API_KEY:-}
+    volumes:
+      - clawrs-data:/data
+
+volumes:
+  clawrs-data:
