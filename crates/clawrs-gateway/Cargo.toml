@@ -1,0 +1,32 @@
+[package]
+name = "clawrs-gateway"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "HTTP gateway (Axum) for ClawRS"
+
+[dependencies]
+clawrs-core = { workspace = true }
+clawrs-config = { workspace = true }
+clawrs-store = { workspace = true }
+clawrs-agent = { workspace = true }
+clawrs-events = { workspace = true }
+clawrs-memory = { workspace = true }
+clawrs-llm = { workspace = true }
+clawrs-tools = { workspace = true }
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+futures = { workspace = true }
+chrono = { workspace = true }
+sqlx = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+tower = { workspace = true }
+axum = { workspace = true }
