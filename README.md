@@ -18,7 +18,7 @@ Inspired by the *architecture* of [GoClaw](https://github.com/nextlevelbuilder/g
 |----------|-----|
 | **Web console (GitHub Pages)** | [https://ayushkumarsingh09.github.io/ClawRS/](https://ayushkumarsingh09.github.io/ClawRS/) — **live API** when built with `VITE_API_BASE` (currently [clawrs-api.vercel.app](https://clawrs-api.vercel.app)); falls back to **demo mode** (local storage) if the API is unreachable. |
 | **Repository** | [https://github.com/Ayushkumarsingh09/ClawRS](https://github.com/Ayushkumarsingh09/ClawRS) |
-| **Live API (Vercel)** | `https://clawrs-api.vercel.app` — gateway for GitHub Pages (`VITE_API_BASE`) |
+| **Live API (Vercel)** | [https://clawrs-api.vercel.app](https://clawrs-api.vercel.app) (`/health`, `/api/v1/…`) — gateway for GitHub Pages (`VITE_API_BASE`) |
 | **Full stack (Docker)** | [Deploy to Render](https://render.com/deploy?repo=https://github.com/Ayushkumarsingh09/ClawRS) (free tier; add billing on Fly if using `fly.toml`) |
 
 The Pages build reads the `VITE_API_BASE` repository variable ([Settings → Variables](https://github.com/Ayushkumarsingh09/ClawRS/settings/variables/actions)). Default production API: `https://clawrs-api.vercel.app`. For the Rust gateway on Render/Docker, point the variable at that URL instead.
