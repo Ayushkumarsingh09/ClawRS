@@ -1,0 +1,22 @@
+[package]
+name = "clawrs-agent"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Agent domain model and eight-stage execution pipeline"
+
+[dependencies]
+clawrs-core = { workspace = true }
+clawrs-events = { workspace = true }
+clawrs-memory = { workspace = true }
+clawrs-llm = { workspace = true }
+clawrs-tools = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
