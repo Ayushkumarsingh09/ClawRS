@@ -1,0 +1,12 @@
+/target
+**/*.rs.bk
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+*.pdb
+/node_modules
+web/node_modules
+*.db
+web/dist
