@@ -1,10 +1,7 @@
 # ClawRS
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo.png" />
-    <img src="assets/logo.png" alt="ClawRS" width="480" style="background: transparent;" />
-  </picture>
+  <img src="ClawRS.png" alt="ClawRS" width="520" />
 </p>
 
 <p align="center">
